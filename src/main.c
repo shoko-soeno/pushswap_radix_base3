@@ -6,7 +6,7 @@
 /*   By: ssoeno <ssoeno@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 20:25:32 by ssoeno            #+#    #+#             */
-/*   Updated: 2024/06/23 23:36:02 by ssoeno           ###   ########.fr       */
+/*   Updated: 2024/06/24 14:01:36 by ssoeno           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ static void	init_stack(t_list **stack, int argc, char **argv)
 	values = NULL;
 	if (argc == 2)
 	{
-		values = ft_split(argv[1], ' '); //ft_splitの返り値がNULLの場合のエラーハンドリングが必要
+		values = ft_split(argv[1], ' ');
+		if (!values) //ft_splitの返り値がNULLの場合のエラーハンドリングは？
+			return ;
 	}
 	else
 	{
@@ -63,14 +65,13 @@ int	main(int argc, char *argv[])
 
 	if (argc < 2)
 		return (1);
-	if (!ft_check_args(argc, argv)) // "-"だけもvalidになってしまっているので、修正が必要
-		//Error出力はここでまとめて行うべき
+	if (!ft_check_args(argc, argv)) // "+5"はinvalid, "-"だけもvalidになってしまっているので、修正が必要
+		ft_putstr_fd("Error\n", 2);
 		return (1);
 	stack_a = (t_list **)malloc(sizeof(t_list *)); //なぜかここがsizeof(t_list）になってた
 	stack_b = (t_list **)malloc(sizeof(t_list *));
-	//mallocの失敗はチェックしないとnull参照してしまう！
 	if (!stack_a || !stack_b)
-		return (free(stack_a), free(stack_b), 1); //free関数はNULLを受け取っても何もしないので安全
+		return (free(stack_a), free(stack_b), 1); //mallocの失敗はチェックしないとnull参照してしまう！
 	*stack_a = NULL;
 	*stack_b = NULL;
 	init_stack(stack_a, argc, argv);
@@ -87,7 +88,8 @@ int	main(int argc, char *argv[])
 }
 /*
 radix sortで、座標圧縮後の値を使えば最大桁が効率よく求められる
-コマンドライン引数のエラーハンドリング（特に2つ以上のコマンドライン引数が渡された時のError出力）./push_swap a でエラーが出ない
+コマンドライン引数のエラーハンドリング（特に2つ以上のコマンドライン引数が渡された時のError出力）
+./push_swap a でエラーが出ない
 連結リストの操作でnullチェックが漏れておりメモリリークが防げていない
 long_maxやlong_minでオーバーフローした時に適切に処理されていない
 座標圧縮はnlognのソートを行ってからインデックスを振った方が効率が良い。重複チェックもソート後に行った方が良い。

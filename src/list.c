@@ -6,7 +6,7 @@
 /*   By: ssoeno <ssoeno@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 00:07:31 by ssoeno            #+#    #+#             */
-/*   Updated: 2024/06/23 23:32:00 by ssoeno           ###   ########.fr       */
+/*   Updated: 2024/06/24 12:22:53 by ssoeno           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_list	*ft_lstnew(int value)
 		return (NULL);
 	new->value = value;
 	new->index = 0;
-	nex->initialized = false;
+	new->initialized = false;
 	new->next = NULL;
 	return (new);
 }
